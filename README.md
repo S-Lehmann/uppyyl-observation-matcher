@@ -48,9 +48,9 @@ The [Uppaal](https://www.uppaal.org/) model checking tool (tested with [version 
 To install the Uppyyl Observation Matcher (and the dependencies "Uppaal C Language" and "Uppaal Model"), run the following commands in order:
 
 ```
-python3.8 -m pip install -e path_to_uppaal_c_language
-python3.8 -m pip install -e path_to_uppaal_model
-python3.8 -m pip install -e path_to_uppyyl_observation_matcher
+python3.8 -m pip install -e ./uppyyl-observation-matcher/uppaal_c_language/
+python3.8 -m pip install -e ./uppyyl-observation-matcher/uppaal_model/
+python3.8 -m pip install -e ./uppyyl-observation-matcher/uppyyl_observation_matcher/
 ```
 
 ### Usage
