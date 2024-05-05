@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>/************************************************
+* 3D Needle Steering Model *
+****************************
+
+This model implements ...
+
+************************************************/
+
+/********************************
+************ General ************
+********************************/
+
+broadcast chan _step;
+bool _stepped = true;
+
+const int DELAY = 0;
+
+/******************************************
+************ Committment Check ************
+******************************************/
+
+const int INST_COUNT = 1;
+bool COMM[INST_COUNT] = { true };
+
+bool is_committed() {
+    return exists (i : int[0,INST_COUNT-1]) COMM[i];
+}
+
+/*****************************************
+************ Observation Data ************
+*****************************************/
+
+const int OBS_COUNT = 1;
+const int OBS_T[OBS_COUNT] = {0};
+</declaration>
+	<template>
+		<name>Trace_Matcher_Tmpl</name>
+		<declaration>clock tt;
+int i = 0;
+
+bool check_vars() {
+    return true;
+}
+
+bool check_time() {
+    return true;
+}</declaration>
+		<location id="id0" x="-229" y="102">
+			<name x="-263" y="69">m_i</name>
+			<label kind="invariant" x="-272" y="119">check_time()</label>
+		</location>
+		<location id="id1" x="-25" y="102">
+			<name x="-42" y="76">h</name>
+			<committed/>
+		</location>
+		<location id="id2" x="144" y="102">
+			<name x="136" y="68">S</name>
+			<committed/>
+		</location>
+		<location id="id3" x="-391" y="102">
+			<name x="-399" y="68">d</name>
+			<label kind="invariant" x="-425" y="119">tt &lt;= DELAY</label>
+		</location>
+		<location id="id4" x="-501" y="102">
+			<name x="-510" y="68">I_d</name>
+			<committed/>
+		</location>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id0"/>
+			<label kind="assignment" x="-331" y="102">tt = 0</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-195" y="9">check_time() &amp;&amp;
+check_vars()</label>
+			<label kind="assignment" x="-195" y="43">i += 1</label>
+			<nail x="-229" y="43"/>
+			<nail x="-25" y="43"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-178" y="86">i &lt; OBS_COUNT</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-8" y="85">i &gt;= OBS_COUNT</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+		</transition>
+	</template>
+	<system>Trace_Matcher = Trace_Matcher_Tmpl();
+
+system Trace_Matcher;</system>
+	<queries>
+		<query>
+			<formula>simulate 1 [&lt;= 10] {x}
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Committed_Sync.S
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>

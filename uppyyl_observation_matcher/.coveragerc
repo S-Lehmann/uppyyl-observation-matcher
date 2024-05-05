@@ -1,0 +1,25 @@
+[run]
+branch = True
+source = ./uppyyl_observation_matcher
+omit =
+    ./uppyyl_observation_matcher/version.py
+    ./uppyyl_observation_matcher/__main__.py
+    *__init__*
+
+[report]
+exclude_lines =
+    # re-enable the standard pragma
+    pragma: no cover
+
+    # ignore debug-only code:
+    def __repr__
+    if self.debug:
+    if settings.DEBUG:
+
+    # Ignore tests not reaching defensive assertion code:
+    raise AssertionError
+    raise NotImplementedError
+
+    # Ignore non-runnable code:
+    if 0:
+    if __name__ == .__main__.:

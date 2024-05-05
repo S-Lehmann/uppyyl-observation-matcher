@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>/************************************************
+* 3D Needle Steering Model *
+****************************
+
+This model implements ...
+
+************************************************/
+
+/********************************
+************ General ************
+********************************/
+
+broadcast chan _step;
+bool _stepped = true;
+
+const int DELAY = 0;
+
+/******************************************
+************ Committment Check ************
+******************************************/
+
+const int INST_COUNT = 1;
+bool COMM[INST_COUNT] = { true };
+
+bool is_committed() {
+    return exists (i : int[0,INST_COUNT-1]) COMM[i];
+}
+
+/*****************************************
+************ Observation Data ************
+*****************************************/
+
+const int OBS_COUNT = 1;
+const int OBS_T[OBS_COUNT] = {0};
+</declaration>
+	<template>
+		<name>Trace_Matcher_Tmpl</name>
+		<declaration>clock tt;
+int i = 0;
+
+bool check_vars() {
+    return true;
+}
+
+bool check_time() {
+    return true;
+}</declaration>
+		<location id="id0" x="-136" y="8">
+			<name x="-170" y="-25">m_i</name>
+			<label kind="invariant" x="-246" y="0">check_time()</label>
+		</location>
+		<location id="id1" x="68" y="8">
+			<name x="85" y="0">h</name>
+			<committed/>
+		</location>
+		<location id="id2" x="-136" y="102">
+			<name x="-170" y="76">I_m</name>
+			<committed/>
+		</location>
+		<location id="id3" x="68" y="102">
+			<name x="85" y="93">S</name>
+			<committed/>
+		</location>
+		<location id="id4" x="-136" y="195">
+			<name x="-178" y="212">m_ic</name>
+			<label kind="invariant" x="-246" y="187">check_time()</label>
+			<committed/>
+		</location>
+		<location id="id5" x="68" y="195">
+			<name x="85" y="186">h_c</name>
+			<committed/>
+		</location>
+		<location id="id6" x="-433" y="8">
+			<name x="-459" y="0">d</name>
+			<label kind="invariant" x="-476" y="-25">tt &lt;= DELAY</label>
+		</location>
+		<location id="id7" x="-433" y="102">
+			<name x="-467" y="94">I_d</name>
+			<committed/>
+		</location>
+		<location id="id8" x="-433" y="195">
+			<name x="-476" y="186">d_c</name>
+			<label kind="invariant" x="-476" y="212">tt &lt;= DELAY</label>
+			<committed/>
+		</location>
+		<init ref="id7"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-382" y="195">!_stepped</label>
+			<label kind="assignment" x="-382" y="161">tt = 0,
+_stepped = true</label>
+			<nail x="-314" y="195"/>
+			<nail x="-289" y="102"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-382" y="-8">!_stepped</label>
+			<label kind="assignment" x="-382" y="8">tt = 0,
+_stepped = true</label>
+			<nail x="-314" y="8"/>
+			<nail x="-289" y="102"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-263" y="127">is_committed()</label>
+			<label kind="synchronisation" x="-263" y="144">_step!</label>
+			<label kind="assignment" x="-263" y="161">_stepped = false</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-102" y="144">_stepped</label>
+			<nail x="-85" y="102"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-102" y="42">_stepped</label>
+			<nail x="-85" y="102"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-263" y="25">!is_committed()</label>
+			<label kind="synchronisation" x="-263" y="42">_step!</label>
+			<label kind="assignment" x="-263" y="59">_stepped = false</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-102" y="-102">!_stepped &amp;&amp;
+check_time() &amp;&amp;
+check_vars()</label>
+			<label kind="assignment" x="-102" y="-51">i += 1</label>
+			<nail x="-136" y="-51"/>
+			<nail x="68" y="-51"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-85" y="-8">i &lt; OBS_COUNT</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id3"/>
+			<label kind="guard" x="76" y="42">i &gt;= OBS_COUNT</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-102" y="263">!_stepped &amp;&amp;
+check_time() &amp;&amp;
+check_vars()</label>
+			<label kind="assignment" x="-76" y="220">i += 1,
+_stepped = true</label>
+			<nail x="-136" y="254"/>
+			<nail x="68" y="254"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-85" y="178">i &lt; OBS_COUNT</label>
+			<label kind="assignment" x="-93" y="195">_stepped = false</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id3"/>
+			<label kind="guard" x="76" y="144">i &gt;= OBS_COUNT</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="guard" x="-560" y="127">is_committed()</label>
+			<label kind="synchronisation" x="-560" y="144">_step!</label>
+			<label kind="assignment" x="-560" y="161">_stepped = false</label>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-391" y="127">_stepped</label>
+			<nail x="-382" y="102"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-391" y="59">_stepped</label>
+			<nail x="-382" y="102"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-561" y="34">!is_committed()</label>
+			<label kind="synchronisation" x="-561" y="51">_step!</label>
+			<label kind="assignment" x="-561" y="68">_stepped = false</label>
+		</transition>
+	</template>
+	<system>Trace_Matcher = Trace_Matcher_Tmpl();
+
+system Trace_Matcher;</system>
+	<queries>
+		<query>
+			<formula>simulate 1 [&lt;= 10] {x}
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Committed_Sync.S
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>

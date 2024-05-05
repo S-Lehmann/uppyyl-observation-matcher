@@ -1,0 +1,1 @@
+"""The Uppaal model module."""
