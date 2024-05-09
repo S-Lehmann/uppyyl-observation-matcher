@@ -14,9 +14,9 @@ otherwise, skip that part.
 #### Initial setup of the TACAS 23 VM
 - Download and install Oracle VM VirtualBox.
   - Note: For MacOS, only Intel hardware is fully supported yet.
-- Add a Host-only network adapter in the settings of VirtualBox.
-- Download and import the [TACAS 23 Artifact Evaluation VM](https://zenodo.org/records/7113223) appliance to VirtualBox.
-- Enable the Host-only adapter:
+- (MacOS only) Add a Host-only network adapter in the settings of VirtualBox.
+- Download and import the [TACAS 23 Artifact Evaluation VM](https://zenodo.org/records/7113223) appliance.
+- Enable the network adapter ("host-only" under MacOS):
   - Settings -> Network -> Enable Network Adapter
 - (Optional) Add the VBoxGuestAdditions, e.g., for adapting the screen resolution in the VM:
   - See https://www.virtualbox.org/manual/ch04.html#guestadd-intro
@@ -88,9 +88,9 @@ git clone https://github.com/S-Lehmann/uppyyl-observation-matcher.git
 Then install the Uppyyl Observation Matcher (and the dependencies "Uppaal C Language" and "Uppaal Model") by running the following commands in order:
 
 ```
-python3.8 -m pip install -e <project_folder>/uppyyl-observation-matcher/uppaal_c_language/
-python3.8 -m pip install -e <project_folder>/uppyyl-observation-matcher/uppaal_model/
-python3.8 -m pip install -e <project_folder>/uppyyl-observation-matcher/uppyyl_observation_matcher/
+python3.8 -m pip install -e ./uppyyl-observation-matcher/uppaal_c_language/
+python3.8 -m pip install -e ./uppyyl-observation-matcher/uppaal_model/
+python3.8 -m pip install -e ./uppyyl-observation-matcher/uppyyl_observation_matcher/
 ```
 
 ### Usage
